@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Submit Form</title>
+</head>
+<body>
+	<h2>Enter your details and select a plan:</h2>
+	<form id="myForm">
+		<label for="firstName">First Name:</label><br>
+		<input type="text" id="firstName" name="firstName" required><br>
+		<label for="lastName">Last Name:</label><br>
+		<input type="text" id="lastName" name="lastName" required><br>
+		<label for="email">Email:</label><br>
+		<input type="email" id="email" name="email" required><br>
+		<label for="plan">Plan:</label><br>
+		<select id="plan" name="plan">
+			<option value="Developer environment">Developer environment</option>
+			<option value="Standard environment">Standard environment</option>
+			<option value="Professional environment">Professional environment</option>
+		</select><br><br>
+		<input type="button" onclick="submitForm()" value="Submit">
+	</form>
+
+	<script>
+		function submitForm() {
+			var firstName = document.getElementById("firstName").value;
+			var lastName = document.getElementById("lastName").value;
+			var email = document.getElementById("email").value;
+			var plan = document.getElementById("plan").value;
+
+			var xhr = new XMLHttpRequest();
+			var url = "https://lampbox-webhook.azurewebsites.net/api/HttpTrigger2?";
+			var params = {
+				"firstName": firstName,
+				"lastName": lastName,
+				"email": email,
+				"plan": plan,
+				"purchaseId": plan,
+			}
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.send(JSON.stringify(params));
+
+			alert("Form submitted successfully!");
+			document.getElementById("myForm").reset();
+		}
+	</script>
+</body>
+</html>
